@@ -9,8 +9,8 @@ data/processed/*
 
 # Trained models ARE committed (the deployed app loads them, about 23 MB in total)
 
-# Downloaded NLTK corpora
-nltk_data/
+# NLTK data is committed (only the few files the app needs, about 12 MB) so the deployed app never downloads anything
+nltk_data/**/*.zip
 
 # Virtual environments / caches
 .venv/
