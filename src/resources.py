@@ -49,11 +49,13 @@ def ensure_nltk_data() -> Path:
         try:
             nltk.data.find(locator)
         except LookupError:
+            present = sorted(p.name for p in data_dir.rglob("*") if p.is_file())[:12]
             ok = nltk.download(package, download_dir=str(data_dir), quiet=True)
             if not ok:
                 raise RuntimeError(
-                    f"Could not download NLTK package '{package}'. Check your internet connection "
-                    f"or run: python -m nltk.downloader -d \"{data_dir}\" {package}"
+                    f"NLTK resource '{locator}' was not found in '{data_dir}' and could not be downloaded. "
+                    f"Files present there: {present or 'none'}. "
+                    f"To fix, run: python -m nltk.downloader -d \"{data_dir}\" {package}"
                 )
             nltk.data.find(locator)
     return data_dir

@@ -40,6 +40,9 @@ except FileNotFoundError as exc:
     st.error(f"Saved models not found. {exc}")
     st.code("python train.py --data dataset/Sarcasm_Headlines_Dataset_v2.json\npython evaluate.py")
     st.stop()
+except Exception as exc:  # shown in full here, because Streamlit Cloud hides uncaught error messages
+    st.error(f"The app could not start: {type(exc).__name__}: {exc}")
+    st.stop()
 
 tab_predict, tab_compare, tab_data, tab_about = st.tabs(
     ["Headline prediction", "Model comparison", "Dataset overview", "About the model"]
