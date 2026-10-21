@@ -1,7 +1,7 @@
-"""Fixed linguistic resources used by the feature extractor.
+﻿"""Fixed linguistic resources used by the feature extractor.
 
 Resources (all lower-cased, loaded once):
-  * stop words        : NLTK ``stopwords`` corpus, English list (179 entries, incl. contractions)
+  * stop words        : NLTK ``stopwords`` corpus, English list (198 entries, incl. contractions)
   * known vocabulary  : union of NLTK ``words`` corpus (en) and the CMU Pronouncing Dictionary
                         headwords (the latter adds inflected forms and many proper nouns)
   * easy-word list    : the 2,941-entry Dale-Chall familiar-word list vendored from the

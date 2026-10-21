@@ -108,6 +108,10 @@ def main(argv=None) -> int:
     feat_df = pd.concat([df.reset_index(drop=True), pd.DataFrame(X, columns=FEATURE_NAMES)], axis=1)
     features_csv = processed_dir / "features.csv"
     feat_df.to_csv(features_csv, index=False, encoding="utf-8")
+    # small display sample for the app (headline text and label only, never article links)
+    df.sample(n=min(20, len(df)), random_state=0)[["headline", "is_sarcastic"]].to_csv(
+        reports_dir / "sample_headlines.csv", index=False, encoding="utf-8"
+    )
 
     train_m = (df.split == "train").to_numpy()
     val_m = (df.split == "validation").to_numpy()

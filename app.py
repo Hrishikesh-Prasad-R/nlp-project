@@ -1,4 +1,4 @@
-﻿"""English Sarcasm Detection - Streamlit app. Loads saved artifacts; never retrains."""
+"""English Sarcasm Detection - Streamlit app. Loads saved artifacts; never retrains."""
 from __future__ import annotations
 
 import json
@@ -16,7 +16,7 @@ CFG = load_config()
 MODELS_DIR = project_path(CFG["paths"]["models_dir"])
 REPORTS_DIR = project_path(CFG["paths"]["reports_dir"])
 FIGURES_DIR = project_path(CFG["paths"]["figures_dir"])
-FEATURES_CSV = project_path(CFG["paths"]["processed_dir"]) / "features.csv"
+SAMPLE_CSV = REPORTS_DIR / "sample_headlines.csv"
 
 
 @st.cache_resource(show_spinner="Loading saved models...")
@@ -138,9 +138,9 @@ with tab_data:
             pd.DataFrame(splits).T.rename(columns={"n": "Total", "sarcastic": "Sarcastic", "non_sarcastic": "Non-sarcastic"}),
             width="stretch",
         )
-    if FEATURES_CSV.is_file():
+    if SAMPLE_CSV.is_file():
         st.markdown("**Sample headlines** (article links are never used or shown)")
-        sample = pd.read_csv(FEATURES_CSV, usecols=["headline", "is_sarcastic"]).sample(10, random_state=0)
+        sample = pd.read_csv(SAMPLE_CSV, encoding="utf-8").head(10)
         sample["label"] = sample["is_sarcastic"].map({0: "Non-sarcastic", 1: "Sarcastic"})
         st.dataframe(sample[["headline", "label"]], hide_index=True, width="stretch")
 

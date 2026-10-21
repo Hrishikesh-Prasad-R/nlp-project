@@ -33,6 +33,23 @@ python -m pytest
   `--data`; the two files are never concatenated. **Note:** running `train.py` overwrites `models/` and
   `reports/` — copy them first if you want to keep results for both versions.
 
+## Deploy on Streamlit Community Cloud
+
+The app only loads saved artifacts, so the trained models and report files are committed to the repo
+(`models/*.joblib`, `models/metadata.json`, `reports/`). The raw dataset and `data/processed/` are not needed
+to run the app.
+
+1. Push the repo to GitHub (public, or private with Streamlit access granted).
+2. Go to https://share.streamlit.io and sign in with GitHub, then click **Create app**.
+3. Choose the repository `Hrishikesh-Prasad-R/nlp-project`, branch `main`, main file `app.py`.
+4. Open **Advanced settings** and select **Python 3.12** (the pinned numpy, pandas and scikit-learn
+   versions need Python 3.11 or newer; scikit-learn must stay at 1.8.0 so the saved models load).
+5. Click **Deploy**. The first start takes a few minutes: dependencies are installed and four small NLTK
+   resources are downloaded on first use.
+
+To retrain with different settings, run `train.py` and `evaluate.py` locally and commit the regenerated
+`models/` and `reports/` files.
+
 ## Project layout
 
 ```
