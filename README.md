@@ -25,8 +25,10 @@ python -m pytest
 * The datasets are JSON Lines (one JSON object per line, **not** a JSON array). Put them anywhere and
   point `--data` to them (path relative to the working directory or project root), or edit `data.path`
   in [`config/config.yaml`](config/config.yaml). The raw files are never modified.
-* The first run downloads four small NLTK resources (stopwords, words, cmudict, perceptron tagger) into
-  `nltk_data/` (internet needed once). The Dale-Chall easy-word list is vendored in `src/resources/`.
+* The four small NLTK resources (stopwords, words, cmudict, perceptron tagger) are committed in `nltk_data/` and
+  read directly from there (NLTK's own data lookup is not used, because NLTK 3.10 refuses to read data from a
+  directory owned or writable by another account, which breaks Streamlit Cloud). If a file is missing it is
+  downloaded once. The Dale-Chall easy-word list is vendored in `src/resources/`.
 * `train.py` takes ~2–3 minutes (the SVC with probability estimates dominates).
 * `train.py` never reads the test split; `evaluate.py` reads it for the first time.
 * v2 is the main experiment. v1 (`dataset/Sarcasm_Headlines_Dataset.json`) can be run separately with
@@ -44,8 +46,7 @@ to run the app.
 3. Choose the repository `Hrishikesh-Prasad-R/nlp-project`, branch `main`, main file `app.py`.
 4. Open **Advanced settings** and select **Python 3.12** (the pinned numpy, pandas and scikit-learn
    versions need Python 3.11 or newer; scikit-learn must stay at 1.8.0 so the saved models load).
-5. Click **Deploy**. The first start takes a few minutes: dependencies are installed and four small NLTK
-   resources are downloaded on first use.
+5. Click **Deploy**. The first start takes a few minutes: dependencies are installed and the app starts.
 
 To retrain with different settings, run `train.py` and `evaluate.py` locally and commit the regenerated
 `models/` and `reports/` files.
