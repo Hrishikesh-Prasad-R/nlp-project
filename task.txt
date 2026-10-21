@@ -1,0 +1,462 @@
+# Implementation Task: English Sarcasm Detection Using Handcrafted Linguistic Features and Ensemble ML
+
+## 1. Objective
+
+Implement a complete, working sarcasm detection project based on the paper PDF already provided in this conversation:
+
+**"An Efficient Sarcasm Detection using Linguistic Features and Ensemble Machine Learning"**
+
+The project must implement the paper's core methodology: extract 13 handcrafted linguistic features from English news headlines, train traditional machine learning classifiers, and combine the best three classifiers using ensemble learning.
+
+The project must include:
+- Dataset validation and preprocessing
+- The 13 linguistic features
+- Seven traditional ML classifiers
+- Majority-voting and probability-averaging ensembles
+- Evaluation with standard classification metrics
+- Saved models and experiment reports
+- A working Streamlit application
+- Tests and documentation
+
+Do not merely provide a plan or code snippets. Create the files, run the implementation, execute tests, train models if the dataset is accessible, fix errors, and report what actually works.
+
+## 2. Inspect existing files before implementation
+
+The research paper PDF and both dataset files have already been provided or downloaded.
+
+Do not search for, redownload, or recreate the dataset.
+
+First inspect the existing workspace to locate:
+- `Sarcasm_Headlines_Dataset_v2.json`
+- `Sarcasm_Headlines_Dataset.json`
+- The provided research paper PDF
+- Any existing project files
+
+If the current project directory is already established, work inside it. Do not create a duplicate project directory unnecessarily.
+
+If the two JSON files are located elsewhere, use their actual paths or configure a single data directory. Do not assume that a particular directory exists without checking.
+
+Keep the original dataset files unchanged.
+
+## 3. Dataset format and loading
+
+Both dataset files use JSON Lines format, also called JSONL. Each physical line contains one independent JSON object.
+
+Example records:
+
+{"is_sarcastic": 1, "headline": "thirtysomething scientists unveil doomsday clock of hair loss", "article_link": "[https://www.theonion.com/thirtysomething-scientists-unveil-doomsday-clock-of-hai-1819586205](https://www.theonion.com/thirtysomething-scientists-unveil-doomsday-clock-of-hai-1819586205)"}
+
+{"is_sarcastic": 0, "headline": "dem rep. totally nails why congress is falling short on gender, racial equality", "article_link": "[https://www.huffingtonpost.com/entry/donna-edwards-inequality_us_57455f7fe4b055bb1170b207](https://www.huffingtonpost.com/entry/donna-edwards-inequality_us_57455f7fe4b055bb1170b207)"}
+
+{"is_sarcastic": 0, "headline": "eat your veggies: 9 deliciously different recipes", "article_link": "[https://www.huffingtonpost.com/entry/eat-your-veggies-9-delici_b_8899742.html](https://www.huffingtonpost.com/entry/eat-your-veggies-9-delici_b_8899742.html)"}
+
+Important: the article_link values shown above are examples. The actual file may contain ordinary URL strings rather than Markdown-formatted links. Support the real file format without requiring the user to modify it.
+
+Implement a robust JSON Lines loader:
+
+1. Open the file as UTF-8.
+2. Read one line at a time.
+3. Parse each non-empty line independently using `json.loads`.
+4. Validate the presence of `headline` and `is_sarcastic`.
+5. Require `is_sarcastic` to be either integer 0 or integer 1.
+6. Reject malformed records with line numbers in the error report.
+7. Drop null, empty or whitespace-only headlines and report the count.
+8. Strip leading and trailing whitespace from headlines.
+9. Deduplicate exact headlines before splitting. Preserve the first valid occurrence and report how many duplicates were removed.
+10. Never use `article_link` as a predictive feature.
+11. Do not scrape the article links or retrieve article content.
+12. Do not concatenate the two dataset versions.
+13. Do not split headlines into shorter fragments.
+
+If a record is malformed, continue processing other records where possible. Fail clearly if the dataset cannot be loaded or contains no usable records.
+
+## 4. Choose the dataset version
+
+Use `Sarcasm_Headlines_Dataset_v2.json` as the default input file.
+
+Treat `Sarcasm_Headlines_Dataset.json` as an alternative dataset version, not as an additional file to append.
+
+Do not combine the two files because this could introduce duplicated examples and invalidate the experiment.
+
+Support selecting the input file through a command-line argument or configuration file.
+
+Example:
+
+`python train.py --data data/raw/Sarcasm_Headlines_Dataset_v2.json`
+
+The actual path must be configurable. If the files are in the project root, the command must work with their root-relative paths instead.
+
+Before training, print and save:
+- Input filename
+- Total raw records
+- Malformed records
+- Records with missing or empty headlines
+- Exact duplicate headlines removed
+- Final usable record count
+- Number and percentage of sarcastic examples
+- Number and percentage of non-sarcastic examples
+
+Save the audit report to `reports/data_audit.json`.
+
+## 5. Preprocessing
+
+Implement a single deterministic preprocessing function used identically during training and inference.
+
+Required operations:
+- Convert text to lowercase.
+- Remove URLs.
+- Remove HTML markup if present.
+- Remove emoji characters.
+- Normalize repeated whitespace.
+- Preserve meaningful punctuation and negation.
+- Preserve the original headline separately for display.
+
+Do not globally remove stop words before feature extraction because stop-word count is one of the paper's 13 features.
+
+Do not stem or lemmatize the headline globally.
+
+Do not modify the original JSON files.
+
+Document every preprocessing operation.
+
+## 6. Implement the paper's 13 features
+
+Follow Section 3.2 and Table 2 of the provided paper PDF.
+
+Every headline must produce exactly 13 numerical features, in the following fixed order:
+
+1. `entropy`
+2. `lexical_diversity`
+3. `dale_chall_readability`
+4. `flesch_reading_ease`
+5. `stop_word_count`
+6. `incorrect_word_count`
+7. `difficult_word_count`
+8. `lengthy_word_count`
+9. `two_letter_word_count`
+10. `single_letter_word_count`
+11. `verb_count`
+12. `adjective_count`
+13. `noun_count`
+
+Feature definitions:
+
+**1. Entropy**
+- Tokenize the headline into word tokens.
+- Calculate each token's frequency probability.
+- Compute Shannon entropy: `-sum(p * log2(p))`.
+- Return 0 for empty input.
+
+**2. Lexical diversity**
+- Number of unique word tokens divided by total word tokens.
+- Return 0 when there are no word tokens.
+
+**3. Dale–Chall readability**
+- Implement the documented Dale–Chall formula.
+- Use a fixed, documented difficult-word vocabulary.
+- Document how short headlines and missing sentence boundaries are handled.
+
+**4. Flesch Reading Ease**
+- Use the standard formula: `206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words)`.
+- Use a documented syllable-counting implementation.
+- Handle headlines with no terminal punctuation consistently.
+
+**5. Stop-word count**
+- Count word tokens in a fixed English stop-word list.
+
+**6. Incorrect-word count**
+- Count word tokens absent from a fixed, documented English vocabulary.
+- Use a reproducible vocabulary source and pin its version.
+- Clearly document that proper nouns, slang and valid uncommon words may be counted as unknown.
+
+**7. Difficult-word count**
+- Count words absent from a fixed, documented easy-word list.
+- Document the source of that list.
+
+**8. Lengthy-word count**
+- The paper's table defines this feature as counting words with more than two characters.
+- Follow that literal definition for the paper-aligned experiment, even though the feature name suggests a different threshold.
+- Explicitly document this discrepancy.
+
+**9. Two-letter-word count**
+- Count word tokens with exactly two alphabetic characters.
+
+**10. Single-letter-word count**
+- Count word tokens with exactly one alphabetic character.
+
+**11. Verb count**
+- Use a documented English part-of-speech tagger.
+- Count tokens tagged as verbs.
+
+**12. Adjective count**
+- Count tokens tagged as adjectives.
+
+**13. Noun count**
+- Count tokens tagged as nouns.
+
+Use a consistent tokenizer and POS tagger. Pin their versions and document how contractions and hyphenated words are handled.
+
+The paper does not uniquely specify every vocabulary, tokenizer and linguistic annotation implementation. Make reasonable, reproducible choices and document them. Do not claim exact reproduction of unspecified details.
+
+Create a single canonical feature-extraction function returning all 13 features in the exact order above.
+
+Test feature extraction on:
+- Empty strings
+- Whitespace-only strings
+- Punctuation-only strings
+- Short headlines
+- Contractions
+- Headlines with numbers
+- Unknown words
+- Ordinary English sentences
+
+All features must be finite numerical values. No NaN or infinity is allowed.
+
+## 7. Traditional ML classifiers
+
+Use scikit-learn to train these seven classifiers on the 13-feature matrix:
+
+1. Gradient Boosting Classifier
+2. Decision Tree Classifier
+3. Random Forest Classifier
+4. Support Vector Classifier
+5. Gaussian Naive Bayes
+6. K-Nearest Neighbors
+7. Logistic Regression
+
+Use random seed 42 wherever applicable.
+
+Use explicit, documented hyperparameters. Start with reasonable defaults. Do not perform expensive hyperparameter searches.
+
+Use scaling for SVM, KNN and Logistic Regression. Fit the scaler only on training data. Tree-based models do not require feature scaling.
+
+Use scikit-learn Pipelines where practical.
+
+Save each fitted model and all preprocessing metadata required for inference.
+
+## 8. Train, validation and test split
+
+Use stratified splits with a fixed random seed of 42:
+
+- Training: 70%
+- Validation: 15%
+- Final test: 15%
+
+Deduplicate before splitting.
+
+Use training data to fit models. Use validation data to select models. Do not use final test results to select classifiers, ensemble composition or hyperparameters.
+
+Select the three best individual classifiers using validation macro F1. Break ties using validation accuracy, then alphabetical model name.
+
+Create two ensembles from the selected classifiers.
+
+**Ensemble A: Majority voting**
+- Each classifier produces one class prediction.
+- Select the class with the most votes.
+- Handle ties deterministically and document the fallback.
+
+**Ensemble B: Probability averaging**
+- Use probability predictions from the three selected models.
+- Enable SVC probability estimation if SVC is selected.
+- Average probabilities and select the class with the highest mean probability.
+- Document that predicted probabilities may not be calibrated.
+
+Select the primary ensemble using validation macro F1 and validation accuracy as a tie-breaker.
+
+Do not use SMOTE or oversampling initially. Report class balance and use stratification.
+
+For reproducibility, save the split indices or stable record identifiers and the random seed.
+
+## 9. Evaluation
+
+Evaluate all seven classifiers and both ensembles on the untouched final test set.
+
+Report:
+- Accuracy
+- Macro precision
+- Macro recall
+- Macro F1
+- Weighted F1
+- Per-class precision, recall and F1
+- Confusion matrices
+- ROC-AUC when valid prediction scores are available
+
+Label mapping:
+- 0 = Non-sarcastic
+- 1 = Sarcastic
+
+Generate:
+- `reports/model_comparison.csv`
+- `reports/final_test_report.json`
+- Confusion matrix plots
+- ROC plots where applicable
+- A comparison chart of test macro F1 scores
+
+Use actual predictions only. Never hard-code paper results into generated evaluation files.
+
+The paper reports approximately:
+- Gradient Boosting accuracy: 92.85%
+- Decision Tree accuracy: 92.52%
+- Random Forest accuracy: 92.41%
+- Majority-voting ensemble accuracy: 93.75%
+- Averaging ensemble accuracy: 93.51%
+
+These values are reference results, not guaranteed targets. Explain differences due to preprocessing, feature definitions, random splits and vocabulary choices.
+
+The paper's data construction may affect the reported performance. Do not create shorter headline fragments for this implementation. Discuss the risk of source-specific patterns because The Onion and HuffPost are different sources with different label distributions.
+
+## 10. Streamlit application
+
+Create a polished, professional application titled:
+
+**English Sarcasm Detection**
+
+Subtitle:
+Traditional Machine Learning with Handcrafted Linguistic Features
+
+Implement four sections.
+
+### A. Headline prediction
+
+- Multiline headline input
+- Predict button
+- Empty-input validation
+- Prediction label: Sarcastic or Non-sarcastic
+- Probability or confidence estimate only when supported by the selected model
+- Display the 13 extracted feature values in a table
+- Brief warning that predictions can be wrong and sarcasm is subjective
+
+### B. Model comparison
+
+- Display final test accuracy and macro F1 for every classifier and ensemble
+- Show a model comparison chart
+- Identify the primary ensemble selected on validation data
+- Distinguish validation metrics from test metrics
+
+### C. Dataset overview
+
+- Total usable record count
+- Class distribution
+- Train, validation and test counts
+- A small sample of headlines and labels
+- Do not display article links
+
+### D. About the model
+
+Explain:
+- Handcrafted linguistic features
+- Traditional ML classifiers
+- Majority voting
+- Dataset limitations
+- Differences from the research paper
+
+The application must load saved artifacts and must not retrain when it starts.
+
+Training-time and inference-time feature extraction must be identical.
+
+## 11. Required project structure
+
+Use this structure, adapting only when existing project files make a different layout more appropriate:
+
+sarcasm-detection/
+    app.py
+    train.py
+    evaluate.py
+    requirements.txt
+    README.md
+    .gitignore
+    config/
+        config.yaml
+    data/
+        raw/
+        processed/
+    src/
+        __init__.py
+        data_loader.py
+        preprocessing.py
+        features.py
+        train_models.py
+        ensemble.py
+        evaluation.py
+        inference.py
+    models/
+    reports/
+        figures/
+    tests/
+        test_data_loader.py
+        test_preprocessing.py
+        test_features.py
+        test_inference.py
+
+Do not create a duplicate project if one already exists. Raw datasets, virtual environments and generated model binaries must be excluded from Git.
+
+## 12. Commands
+
+The following workflow must work from the project root.
+
+Install dependencies:
+
+`python -m pip install -r requirements.txt`
+
+Train models:
+
+`python train.py --data "PATH_TO_THE_ACTUAL_DATASET"`
+
+Evaluate saved artifacts:
+
+`python evaluate.py`
+
+Run the application:
+
+`streamlit run app.py`
+
+The data path must be configurable and must not be hard-coded to a machine-specific absolute path.
+
+The code must report a clear error if a required file is missing.
+
+## 13. Tests and acceptance criteria
+
+The project is complete only when:
+
+1. The existing JSON Lines dataset loads successfully.
+2. The schema and labels are validated.
+3. Duplicate and invalid record counts are reported.
+4. Exactly 13 numerical features are extracted per headline.
+5. Feature extraction is deterministic and tested.
+6. All seven traditional ML models train.
+7. The top three models are selected using validation macro F1.
+8. Both ensemble strategies are evaluated.
+9. The final test set is not used for model selection.
+10. All evaluation metrics and plots are generated from actual predictions.
+11. Model artifacts and metadata are saved.
+12. The Streamlit application starts without retraining.
+13. New headlines can be entered and classified.
+14. Inference uses exactly the same feature order and preprocessing as training.
+15. Tests pass.
+16. A fresh environment can run the project using the README.
+17. No results or completed steps are fabricated.
+
+## 14. Final execution instructions
+
+Inspect the workspace and dataset first.
+
+Implement the entire project, not just a plan. Run tests, execute training if the dataset is available, fix failures and verify that the application starts.
+
+If any operation fails, investigate and correct the underlying issue rather than silently skipping it.
+
+At completion, provide:
+- Project file tree
+- Exact commands to execute
+- Dataset version actually used
+- Data audit counts
+- Test results
+- Actual test metrics, if training completed
+- Location of saved model artifacts
+- Any remaining user actions
+
+Clearly distinguish completed tasks from tasks that could not be executed.
+
+One last detail
+Tell Claude explicitly that the records are one JSON object per line, not a single JSON array. Your sample confirms that format. The loader must therefore use json.loads(line) for each line, not assume the file is a regular JSON array.
+
+Also, use only v2 for the main experiment; keep v1 as an alternative for later comparison.

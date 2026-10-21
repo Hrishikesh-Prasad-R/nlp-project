@@ -1,0 +1,17 @@
+{
+  "train": {
+    "n": 19952,
+    "sarcastic": 9486,
+    "non_sarcastic": 10466
+  },
+  "validation": {
+    "n": 4275,
+    "sarcastic": 2033,
+    "non_sarcastic": 2242
+  },
+  "test": {
+    "n": 4276,
+    "sarcastic": 2033,
+    "non_sarcastic": 2243
+  }
+}

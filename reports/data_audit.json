@@ -1,0 +1,18 @@
+{
+  "input_file": "Sarcasm_Headlines_Dataset_v2.json",
+  "input_path": "dataset\\Sarcasm_Headlines_Dataset_v2.json",
+  "total_raw_records": 28619,
+  "blank_lines_ignored": 0,
+  "malformed_records": 0,
+  "malformed_line_numbers": [],
+  "malformed_details": [],
+  "missing_or_empty_headlines": 0,
+  "valid_records_before_deduplication": 28619,
+  "duplicate_headlines_removed": 116,
+  "duplicates_with_conflicting_labels": 0,
+  "final_usable_records": 28503,
+  "sarcastic_count": 13552,
+  "sarcastic_percent": 47.55,
+  "non_sarcastic_count": 14951,
+  "non_sarcastic_percent": 52.45
+}

@@ -1,0 +1,51 @@
+# Project configuration. All paths are relative to the project root.
+seed: 42
+
+data:
+  # Main experiment: v2 only. The v1 file is an alternative dataset version
+  # (select it with `python train.py --data dataset/Sarcasm_Headlines_Dataset.json`).
+  # The two files are NEVER concatenated.
+  path: dataset/Sarcasm_Headlines_Dataset_v2.json
+  alternative_path: dataset/Sarcasm_Headlines_Dataset.json
+
+split:            # stratified, seeded; deduplication happens before splitting
+  train: 0.70
+  validation: 0.15
+  test: 0.15
+
+paths:
+  models_dir: models
+  reports_dir: reports
+  figures_dir: reports/figures
+  processed_dir: data/processed
+  nltk_data_dir: nltk_data
+
+ensemble:
+  top_k: 3        # number of best individual models (validation macro F1) to ensemble
+
+# Explicit hyperparameters (no hyperparameter search is performed).
+models:
+  gradient_boosting:
+    n_estimators: 100
+    learning_rate: 0.1
+    max_depth: 3
+  decision_tree:
+    max_depth: 10
+    min_samples_leaf: 5
+  random_forest:
+    n_estimators: 200
+    min_samples_leaf: 2
+    n_jobs: -1
+  svc:                # wrapped in StandardScaler; probability=True so it can join the averaging ensemble
+    C: 1.0
+    kernel: rbf
+    gamma: scale
+    probability: true
+  gaussian_nb:
+    var_smoothing: 1.0e-9
+  knn:                # wrapped in StandardScaler
+    n_neighbors: 15
+    weights: uniform
+  logistic_regression:   # wrapped in StandardScaler
+    C: 1.0
+    max_iter: 1000

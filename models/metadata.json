@@ -1,0 +1,116 @@
+{
+  "feature_names": [
+    "entropy",
+    "lexical_diversity",
+    "dale_chall_readability",
+    "flesch_reading_ease",
+    "stop_word_count",
+    "incorrect_word_count",
+    "difficult_word_count",
+    "lengthy_word_count",
+    "two_letter_word_count",
+    "single_letter_word_count",
+    "verb_count",
+    "adjective_count",
+    "noun_count"
+  ],
+  "seed": 42,
+  "label_mapping": {
+    "0": "Non-sarcastic",
+    "1": "Sarcastic"
+  },
+  "dataset_file": "Sarcasm_Headlines_Dataset_v2.json",
+  "dataset_sha256": "ab0faf86c2dbbef47a95080bc7601981f3ea9dc48ccca73382f90b9a56e02b49",
+  "n_records": 28503,
+  "split_counts": {
+    "train": {
+      "n": 19952,
+      "sarcastic": 9486,
+      "non_sarcastic": 10466
+    },
+    "validation": {
+      "n": 4275,
+      "sarcastic": 2033,
+      "non_sarcastic": 2242
+    },
+    "test": {
+      "n": 4276,
+      "sarcastic": 2033,
+      "non_sarcastic": 2243
+    }
+  },
+  "model_names": [
+    "Gradient Boosting",
+    "Decision Tree",
+    "Random Forest",
+    "Support Vector Classifier",
+    "Gaussian Naive Bayes",
+    "K-Nearest Neighbors",
+    "Logistic Regression"
+  ],
+  "selected_models": [
+    "Support Vector Classifier",
+    "Gradient Boosting",
+    "Random Forest"
+  ],
+  "validation_ranking": [
+    "Support Vector Classifier",
+    "Gradient Boosting",
+    "Random Forest",
+    "Decision Tree",
+    "Logistic Regression",
+    "K-Nearest Neighbors",
+    "Gaussian Naive Bayes"
+  ],
+  "primary_ensemble": "Ensemble: Majority Voting",
+  "hyperparameters": {
+    "gradient_boosting": {
+      "n_estimators": 100,
+      "learning_rate": 0.1,
+      "max_depth": 3
+    },
+    "decision_tree": {
+      "max_depth": 10,
+      "min_samples_leaf": 5
+    },
+    "random_forest": {
+      "n_estimators": 200,
+      "min_samples_leaf": 2,
+      "n_jobs": -1
+    },
+    "svc": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": true
+    },
+    "gaussian_nb": {
+      "var_smoothing": 1e-09
+    },
+    "knn": {
+      "n_neighbors": 15,
+      "weights": "uniform"
+    },
+    "logistic_regression": {
+      "C": 1.0,
+      "max_iter": 1000
+    }
+  },
+  "features_csv": "data/processed/features.csv",
+  "resource_fingerprint": {
+    "nltk_version": "3.10.4",
+    "stop_words_sha256": "47608d511aa4fec95139d41e487109ab4a260313745d397210dbf966b1d3c225",
+    "stop_words_count": 198,
+    "known_vocabulary_sha256": "5685d7a823878d0f89fb1726de4a88906ea5cd9af2cfee0cf622668eede1610c",
+    "known_vocabulary_count": 322894,
+    "easy_words_sha256": "2765068cc0c0d82598385072fb01627f18ae436602be8bcca5840375bdc8a5a2",
+    "easy_words_count": 2941,
+    "cmudict_entries": 123455
+  },
+  "versions": {
+    "python": "3.14.3",
+    "scikit-learn": "1.8.0",
+    "numpy": "2.4.4",
+    "pandas": "3.0.2"
+  }
+}

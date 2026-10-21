@@ -1,0 +1,344 @@
+{
+  "note": "Validation metrics, used for model/ensemble selection. Test metrics are in final_test_report.json.",
+  "selected_models": [
+    "Support Vector Classifier",
+    "Gradient Boosting",
+    "Random Forest"
+  ],
+  "primary_ensemble": "Ensemble: Majority Voting",
+  "metrics": {
+    "Gradient Boosting": {
+      "n_samples": 4275,
+      "accuracy": 0.688187134502924,
+      "macro_precision": 0.6877732668120988,
+      "macro_recall": 0.6859383727813118,
+      "macro_f1": 0.6862022491709125,
+      "weighted_f1": 0.687422369860296,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6915297092288243,
+          "recall": 0.731935771632471,
+          "f1": 0.7111592632719393,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6840168243953733,
+          "recall": 0.6399409739301525,
+          "f1": 0.6612452350698856,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1641,
+          601
+        ],
+        [
+          732,
+          1301
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7519407694538772
+    },
+    "Decision Tree": {
+      "n_samples": 4275,
+      "accuracy": 0.656140350877193,
+      "macro_precision": 0.6552386113588926,
+      "macro_recall": 0.6541013947826957,
+      "macro_f1": 0.654263220439691,
+      "weighted_f1": 0.655508681587113,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6643952299829642,
+          "recall": 0.695807314897413,
+          "f1": 0.6797385620915033,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6460819927348209,
+          "recall": 0.6123954746679784,
+          "f1": 0.6287878787878788,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1560,
+          682
+        ],
+        [
+          788,
+          1245
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7028264237757642
+    },
+    "Random Forest": {
+      "n_samples": 4275,
+      "accuracy": 0.6722807017543859,
+      "macro_precision": 0.6717108028583438,
+      "macro_recall": 0.6699250502305185,
+      "macro_f1": 0.6701197940571304,
+      "weighted_f1": 0.6714250822326402,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.676754939050021,
+          "recall": 0.7181088314005353,
+          "f1": 0.6968188703743778,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6666666666666666,
+          "recall": 0.6217412690605018,
+          "f1": 0.643420717739883,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1610,
+          632
+        ],
+        [
+          769,
+          1264
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7271863055305567
+    },
+    "Support Vector Classifier": {
+      "n_samples": 4275,
+      "accuracy": 0.6933333333333334,
+      "macro_precision": 0.6930356468253335,
+      "macro_recall": 0.6910281207533326,
+      "macro_f1": 0.6913112419763725,
+      "weighted_f1": 0.6925326786630915,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6956704497688104,
+          "recall": 0.7381801962533452,
+          "f1": 0.7162951742047176,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6904008438818565,
+          "recall": 0.6438760452533202,
+          "f1": 0.6663273097480275,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1655,
+          587
+        ],
+        [
+          724,
+          1309
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7600112198677224
+    },
+    "Gaussian Naive Bayes": {
+      "n_samples": 4275,
+      "accuracy": 0.6028070175438597,
+      "macro_precision": 0.6023424728143176,
+      "macro_recall": 0.6025432065829075,
+      "macro_f1": 0.6023239256371846,
+      "weighted_f1": 0.6030015511975543,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6246562786434464,
+          "recall": 0.6079393398751115,
+          "f1": 0.6161844484629295,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.5800286669851887,
+          "recall": 0.5971470732907034,
+          "f1": 0.5884634028114396,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1363,
+          879
+        ],
+        [
+          819,
+          1214
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.6443104476406905
+    },
+    "K-Nearest Neighbors": {
+      "n_samples": 4275,
+      "accuracy": 0.6535672514619884,
+      "macro_precision": 0.6525928663271607,
+      "macro_recall": 0.6521067638206874,
+      "macro_f1": 0.6522410364228048,
+      "weighted_f1": 0.6532909566621585,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6656508489333913,
+          "recall": 0.6819803746654772,
+          "f1": 0.6737166776823089,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6395348837209303,
+          "recall": 0.6222331529758977,
+          "f1": 0.6307653951633009,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1529,
+          713
+        ],
+        [
+          768,
+          1265
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7060827962174523
+    },
+    "Logistic Regression": {
+      "n_samples": 4275,
+      "accuracy": 0.6563742690058479,
+      "macro_precision": 0.6556415666072583,
+      "macro_recall": 0.6538888008870585,
+      "macro_f1": 0.6540017583171724,
+      "weighted_f1": 0.6554024779045543,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6619187264348555,
+          "recall": 0.7047279214986619,
+          "f1": 0.6826528407863469,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.649364406779661,
+          "recall": 0.603049680275455,
+          "f1": 0.625350675847998,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1580,
+          662
+        ],
+        [
+          807,
+          1226
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.719478295896477
+    },
+    "Ensemble: Majority Voting": {
+      "n_samples": 4275,
+      "accuracy": 0.6909941520467836,
+      "macro_precision": 0.6906487266227586,
+      "macro_recall": 0.6887062619323534,
+      "macro_f1": 0.6889802767362463,
+      "weighted_f1": 0.6902038230731715,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6937315944467817,
+          "recall": 0.7355040142729705,
+          "f1": 0.7140073609006279,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6875658587987356,
+          "recall": 0.6419085095917364,
+          "f1": 0.6639531925718647,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1649,
+          593
+        ],
+        [
+          728,
+          1305
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7158525717279518
+    },
+    "Ensemble: Probability Averaging": {
+      "n_samples": 4275,
+      "accuracy": 0.6870175438596491,
+      "macro_precision": 0.686613369077824,
+      "macro_recall": 0.6847315897854886,
+      "macro_f1": 0.6849896706549232,
+      "weighted_f1": 0.6862253135114471,
+      "per_class": {
+        "Non-sarcastic": {
+          "precision": 0.6902356902356902,
+          "recall": 0.7314897413024085,
+          "f1": 0.7102641836292768,
+          "support": 2242
+        },
+        "Sarcastic": {
+          "precision": 0.6829910479199579,
+          "recall": 0.6379734382685687,
+          "f1": 0.6597151576805697,
+          "support": 2033
+        }
+      },
+      "confusion_matrix": [
+        [
+          1640,
+          602
+        ],
+        [
+          736,
+          1297
+        ]
+      ],
+      "confusion_matrix_labels": [
+        "Non-sarcastic",
+        "Sarcastic"
+      ],
+      "roc_auc": 0.7557658141117591
+    }
+  }
+}

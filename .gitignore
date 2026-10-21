@@ -1,0 +1,24 @@
+# Raw datasets (never committed, never modified)
+dataset/
+data/raw/*
+!data/raw/.gitkeep
+
+# Generated data
+data/processed/*
+!data/processed/.gitkeep
+
+# Model binaries
+models/*.joblib
+models/*.pkl
+
+# Downloaded NLTK corpora
+nltk_data/
+
+# Virtual environments / caches
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/secrets.toml
